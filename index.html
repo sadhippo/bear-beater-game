@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bear Beater</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+    <script type="module" src="main.js"></script>
+</head>
+<body>
+    <div id="game-container"></div>
+    <script>
+        window.onload = function() {
+            window.Telegram.WebApp.ready();
+            // Initialize your Phaser game here
+            const config = {
+                // Your Phaser config goes here
+            };
+            const game = new Phaser.Game(config);
+        }
+    </script>
+</body>
+</html>
