@@ -215,12 +215,12 @@ export class MainScene extends Phaser.Scene {
             fill: '#fff' 
         }).setOrigin(1, 0);
     
-        this.scoreText = this.add.text(16 * this.scaleFactor, 16 * this.scaleFactor, 'Score: 0', { 
+        this.scoreText = this.add.text(16 * this.scaleFactor, 16 * this.scaleFactor + 10, 'Score: 0', { 
             fontSize: `${32 * this.scaleFactor}px`, 
             fill: '#fff' 
         });
             // Display total score (initialize with 0, will update when loaded)
-            this.totalScoreText = this.add.text(10, 10, 'Total Score: 0', { fontSize: '32px', fill: '#fff' });
+            this.totalScoreText = this.add.text(16 * this.scaleFactor + 40, 16 * this.scaleFactor, 'Total Score: 0', { fontSize: '32px', fill: '#fff' });
             // Load total score
             this.loadTotalScore();
     }
