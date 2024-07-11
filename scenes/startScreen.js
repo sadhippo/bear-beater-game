@@ -36,16 +36,7 @@ export default class StartScreen extends Phaser.Scene {
 
      playButton.on('pointerdown', () => {
          this.scene.start('MainScene'); // Rename this to 'WaveDefenseScene' when you create it
-     });
-
-     // Add play button for Survivor Mode
-     const playButton2 = this.add.image(width * 0.7, height * 0.4, 'play-button2')
-         .setInteractive()
-         .setScale(0.4 * scaleFactor);
-
-     playButton2.on('pointerdown', () => {
-         this.scene.start('SurvivorScene'); // Create this scene
-     });
+     }); 
 
      // Add upgrade (Armoury) button
      const upgradeButton = this.add.image(width * 0.3, height * 0.6, 'upgrade-button')

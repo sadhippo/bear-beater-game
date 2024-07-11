@@ -232,6 +232,7 @@ export class MainScene extends Phaser.Scene {
             callbackScope: this,
             loop: true
         });
+        this.gameTime = 120;
     }
     
     setupGameObjects() {
