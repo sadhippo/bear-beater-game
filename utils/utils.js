@@ -194,7 +194,7 @@ static hitBearWithBullet(scene, bullet, bear) {
 
     static checkBearSpawn(scene) {
         if (scene.bears.countActive(true) === 0) {
-            this.spawnBears(scene);
+            this.spawnEnemies(scene);
         }
     }
 

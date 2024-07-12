@@ -493,6 +493,10 @@ export class MainScene extends Phaser.Scene {
     this.bears.children.iterate(function (bear) {
         bear.disableBody(true, true);
     });
+    this.mice.children.iterate(function (mouse) {
+        mouse.disableBody(true, true);
+    });
+
 
     // Create a container for all game over elements
     this.gameOverContainer = this.add.container(0, 0);
