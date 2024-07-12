@@ -286,6 +286,11 @@ static hitBearWithBullet(scene, bullet, bear) {
                 Utils.spawnBear(scene);
             }
         }
+
+        const elapsedTime = 120 - scene.gameTime;
+        const newDelay = Math.max(Utils.minSpawnRate, Utils.baseSpawnRate - (elapsedTime * 5));
+
+        Utils.spawnTimer = scene.time.delayedCall(newDelay, () => Utils.startDynamicEnemySpawn(scene), [], scene);
     }
     
     static startDynamicEnemySpawn(scene) {
