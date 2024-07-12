@@ -137,7 +137,8 @@ export class MainScene extends Phaser.Scene {
     
         // Set up game-over event
         this.events.on('playerDied', this.gameOver, this);
-    
+        this.mouseAnimationWalk();
+
         // Initialize bear spawning
         Utils.initEnemySpawn(this);
 
@@ -146,7 +147,6 @@ export class MainScene extends Phaser.Scene {
         this.setupPowerUpUI();
 
         // Set up enemy animation
-        this.mouseAnimationWalk();
       
 
         this.game.events.on('hidden', () => {
