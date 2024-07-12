@@ -29,6 +29,7 @@ export class MainScene extends Phaser.Scene {
         this.scoreText = null;
         this.hasPowerUp = false;
         this.powerUpTimer = 0;
+        this.mice = null;
 
         // Add responsive variables
         this.screenWidth = null;
