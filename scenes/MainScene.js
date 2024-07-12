@@ -46,8 +46,8 @@ export class MainScene extends Phaser.Scene {
         this.load.image('bear', 'bear.png');
         this.load.image('background', 'background.png');
         this.load.image('powerup', 'powerup.png');
-        this.load.image('mouse-stand', 'mousestanding.png');
-        this.load.image('mouse-step', 'mousewalk.png');
+        this.load.image('mouse-stand', 'mouse-stand.png');
+        this.load.image('mouse-step', 'mouse-walk.png');
 
         // Add loading progress bar
         let progressBar = this.add.graphics();

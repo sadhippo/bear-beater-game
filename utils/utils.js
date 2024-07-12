@@ -121,6 +121,22 @@ static hitBearWithBullet(scene, bullet, bear) {
             }
         });
     }
+
+    static bearDeath(scene, bear) {
+        bear.setTint(0xff0000);  // Sets the tint to red
+
+        scene.tweens.add({
+            targets: bear,
+            alpha: 0,
+            scale: 0.1 * scene.scaleFactor,
+            duration: 300,
+            ease: 'Power2',
+            onComplete: () => {
+                bear.destroy();
+            }
+        });
+    }
+
     static hitMouseWithBullet(scene, bullet, mouse) {
         this.mouseDeath(scene, mouse);
     
@@ -223,7 +239,24 @@ static hitBearWithBullet(scene, bullet, bear) {
         const edge = Phaser.Math.Between(0, 3);
         let x, y;
     
-        // Same switch statement as spawnBear for positioning
+        switch(edge) {
+            case 0: // Top
+                x = Phaser.Math.Between(0, scene.screenWidth);
+                y = 0;
+                break;
+            case 1: // Right
+                x = scene.screenWidth;
+                y = Phaser.Math.Between(0, scene.screenHeight);
+                break;
+            case 2: // Bottom
+                x = Phaser.Math.Between(0, scene.screenWidth);
+                y = scene.screenHeight;
+                break;
+            case 3: // Left
+                x = 0;
+                y = Phaser.Math.Between(0, scene.screenHeight);
+                break;
+        }
     
         const mouse = scene.mice.create(x, y, 'mouse-stand');
         const scale = Phaser.Math.FloatBetween(0.3, 0.7) * scene.scaleFactor;
