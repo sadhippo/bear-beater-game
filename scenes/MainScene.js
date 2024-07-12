@@ -45,7 +45,8 @@ export class MainScene extends Phaser.Scene {
         this.load.image('bear', 'bear.png');
         this.load.image('background', 'background.png');
         this.load.image('powerup', 'powerup.png');
-        this.load.image('bullet', 'bullet.png');
+        this.load.image('mouse-stand', 'mousestanding.png');
+        this.load.image('mouse-step', 'mousewalk.png');
 
         // Add loading progress bar
         let progressBar = this.add.graphics();
@@ -137,10 +138,15 @@ export class MainScene extends Phaser.Scene {
         this.events.on('playerDied', this.gameOver, this);
     
         // Initialize bear spawning
-        Utils.initBearSpawn(this);
+        Utils.initEnemySpawn(this);
+
     
         // Set up power-up UI
         this.setupPowerUpUI();
+
+        // Set up enemy animation
+        this.mouseAnimationWalk();
+      
 
         this.game.events.on('hidden', () => {
             this.pauseGame();
@@ -149,6 +155,22 @@ export class MainScene extends Phaser.Scene {
         this.game.events.on('visible', () => {
             this.resumeGame();
         }, this);
+    }
+
+    mouseAnimationWalk(){
+        this.anims.create({
+            key: 'mouse-walk',
+            frames: [
+                { key: 'mouse-stand' },
+                { key: 'mouse-step' }
+            ],
+            frameRate: 4,
+            repeat: -1
+        });
+        this.mouse = this.add.sprite(400, 300, 'mouse-stand');
+
+        // Play the animation
+        this.mouse.play('mouse-walk');
     }
 
     loadTotalScore() {
@@ -242,6 +264,8 @@ export class MainScene extends Phaser.Scene {
             maxSize: 200
         });
         this.powerUps = this.physics.add.group();
+        this.mice = this.physics.add.group();
+
     }
     
     setupCollisions() {
@@ -255,6 +279,10 @@ export class MainScene extends Phaser.Scene {
     
         this.physics.add.overlap(this.player, this.powerUps, (player, powerUp) => 
             PowerUps.collectPowerUp(this, player, powerUp), null, this);
+
+        this.physics.add.collider(this.player, this.mice, this.handlePlayerEnemyCollision, null, this);
+        this.physics.add.collider(this.projectiles, this.mice, this.handleProjectileEnemyCollision, null, this);
+
     }
     
     setupInput() {
@@ -319,6 +347,14 @@ export class MainScene extends Phaser.Scene {
                 }
             });
         }
+
+        this.mice.getChildren().forEach(mouse => {
+            if (mouse.body.velocity.x < 0) {
+                mouse.setFlipX(true);
+            } else {
+                mouse.setFlipX(false);
+            }
+        });
 
     }
     

@@ -163,21 +163,55 @@ static hitBearWithBullet(scene, bullet, bear) {
         scene.physics.velocityFromRotation(angle, 100 * scene.scaleFactor, bear.body.velocity);
     }
 
-    static spawnBears(scene) {
-        for (let i = 0; i < 5; i++) {
-            Utils.spawnBear(scene);
+    static spawnMouse(scene) {
+        if (!scene.gameActive) return;
+    
+        const edge = Phaser.Math.Between(0, 3);
+        let x, y;
+    
+        // Same switch statement as spawnBear for positioning
+    
+        const mouse = scene.mice.create(x, y, 'mouse-stand');
+        const scale = Phaser.Math.FloatBetween(0.3, 0.7) * scene.scaleFactor;
+        mouse.setScale(scale);
+    
+        mouse.play('mouse-walk');
+    
+        const centerX = scene.screenWidth / 2;
+        const centerY = scene.screenHeight / 2;
+        const angle = Phaser.Math.Angle.Between(x, y, centerX, centerY);
+        scene.physics.velocityFromRotation(angle, 150 * scene.scaleFactor, mouse.body.velocity);
+    
+        // Flip the mouse based on direction
+        if (mouse.body.velocity.x < 0) {
+            mouse.setFlipX(true);
         }
     }
-
-    static startDynamicBearSpawn(scene) {
+    
+    static spawnEnemies(scene) {
+        for (let i = 0; i < 5; i++) {
+            if (Phaser.Math.Between(0, 1) === 0) {
+                Utils.spawnBear(scene);
+            } else {
+                Utils.spawnMouse(scene);
+            }
+        }
+    }
+    
+    static startDynamicEnemySpawn(scene) {
         if (!scene.gameActive) return;
-
-        Utils.spawnBear(scene);
-        
-        const elapsedTime = 120 - scene.gameTime;
-        const newDelay = Math.max(Utils.minSpawnRate, Utils.baseSpawnRate - (elapsedTime * 5));
-        
-        Utils.spawnTimer = scene.time.delayedCall(newDelay, () => Utils.startDynamicBearSpawn(scene), [], scene);
+    
+        if (Phaser.Math.Between(0, 1) === 0) {
+            Utils.spawnBear(scene);
+        } else {
+            Utils.spawnMouse(scene);
+        }
+    
+        // Rest of the method remains the same
+    }
+    
+    static initEnemySpawn(scene) {
+        Utils.startDynamicEnemySpawn(scene);
     }
 
     static initBearSpawn(scene) {
