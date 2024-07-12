@@ -121,6 +121,60 @@ static hitBearWithBullet(scene, bullet, bear) {
             }
         });
     }
+    static hitMouseWithBullet(scene, bullet, mouse) {
+        this.mouseDeath(scene, mouse);
+    
+        bullet.setActive(false).setVisible(false);
+        scene.bullets.killAndHide(bullet);
+        const baseScore = 30; // Slightly higher score for mice
+        const playerManager = PlayerManager.getInstance();
+        const multiplier = playerManager.getUpgradeEffect('basicMultiplier');
+        const scoreGained = Math.floor(baseScore * multiplier);
+            
+        scene.score += scoreGained;
+        scene.showFloatingText(mouse.x, mouse.y, `+${scoreGained}`);
+        scene.scoreText.setText('Score: ' + scene.score);
+    
+        this.checkEnemySpawn(scene);
+    }
+    
+    static hitMouse(scene, player, mouse) {
+        this.mouseDeath(scene, mouse);
+        
+        const baseScore = 15; // Slightly higher score for mice
+        const playerManager = PlayerManager.getInstance();
+        const multiplier = playerManager.getUpgradeEffect('basicMultiplier');
+        const scoreGained = Math.floor(baseScore * multiplier);
+        
+        scene.score += scoreGained;
+        scene.showFloatingText(mouse.x, mouse.y, `+${scoreGained}`);
+    
+        scene.scoreText.setText('Score: ' + scene.score);
+        player.takeDamage(3); // Mice deal slightly less damage
+    
+        this.checkEnemySpawn(scene);
+    }
+    
+    static mouseDeath(scene, mouse) {
+        mouse.setTint(0xff0000);  // Sets the tint to red
+    
+        scene.tweens.add({
+            targets: mouse,
+            alpha: 0,
+            scale: 0.1 * scene.scaleFactor,
+            duration: 200, // Slightly faster death animation for mice
+            ease: 'Power2',
+            onComplete: () => {
+                mouse.destroy();
+            }
+        });
+    }
+    
+    static checkEnemySpawn(scene) {
+        if (scene.bears.countActive(true) === 0 && scene.mice.countActive(true) === 0) {
+            this.spawnEnemies(scene);
+        }
+    }
 
     static checkBearSpawn(scene) {
         if (scene.bears.countActive(true) === 0) {
@@ -189,11 +243,14 @@ static hitBearWithBullet(scene, bullet, bear) {
     }
     
     static spawnEnemies(scene) {
-        for (let i = 0; i < 5; i++) {
-            if (Phaser.Math.Between(0, 1) === 0) {
-                Utils.spawnBear(scene);
-            } else {
+        const totalEnemies = 10;
+        const mouseRatio = Math.min(scene.score / 1000, 0.5); // Increase mouse ratio as score increases, up to 50%
+    
+        for (let i = 0; i < totalEnemies; i++) {
+            if (Math.random() < mouseRatio) {
                 Utils.spawnMouse(scene);
+            } else {
+                Utils.spawnBear(scene);
             }
         }
     }

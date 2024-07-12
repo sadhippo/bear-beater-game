@@ -269,20 +269,27 @@ export class MainScene extends Phaser.Scene {
     }
     
     setupCollisions() {
-         this.physics.add.overlap(this.player, this.bears, (player, bear) => {
-        player.takeDamage(1);
-        Utils.hitBear(this, player, bear);
-    }, null, this);
+        // Bear collisions
+        this.physics.add.overlap(this.player, this.bears, (player, bear) => {
+            player.takeDamage(1);
+            Utils.hitBear(this, player, bear);
+        }, null, this);
     
         this.physics.add.collider(this.bullets, this.bears, (bullet, bear) => 
             Utils.hitBearWithBullet(this, bullet, bear), null, this);
     
+        // Mouse collisions
+        this.physics.add.overlap(this.player, this.mice, (player, mouse) => {
+            player.takeDamage(1);  // You might want to adjust this value
+            Utils.hitMouse(this, player, mouse);
+        }, null, this);
+    
+        this.physics.add.collider(this.bullets, this.mice, (bullet, mouse) => 
+            Utils.hitMouseWithBullet(this, bullet, mouse), null, this);
+    
+        // Power-up collision
         this.physics.add.overlap(this.player, this.powerUps, (player, powerUp) => 
             PowerUps.collectPowerUp(this, player, powerUp), null, this);
-
-        this.physics.add.collider(this.player, this.mice, this.handlePlayerEnemyCollision, null, this);
-        this.physics.add.collider(this.projectiles, this.mice, this.handleProjectileEnemyCollision, null, this);
-
     }
     
     setupInput() {
