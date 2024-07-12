@@ -287,10 +287,7 @@ static hitBearWithBullet(scene, bullet, bear) {
             }
         }
 
-        const elapsedTime = 120 - scene.gameTime;
-        const newDelay = Math.max(Utils.minSpawnRate, Utils.baseSpawnRate - (elapsedTime * 5));
-
-        Utils.spawnTimer = scene.time.delayedCall(newDelay, () => Utils.startDynamicEnemySpawn(scene), [], scene);
+    
     }
     
     static startDynamicEnemySpawn(scene) {
@@ -301,7 +298,10 @@ static hitBearWithBullet(scene, bullet, bear) {
         } else {
             Utils.spawnMouse(scene);
         }
-    
+        const elapsedTime = 120 - scene.gameTime;
+        const newDelay = Math.max(Utils.minSpawnRate, Utils.baseSpawnRate - (elapsedTime * 5));
+
+        Utils.spawnTimer = scene.time.delayedCall(newDelay, () => Utils.startDynamicEnemySpawn(scene), [], scene);
         // Rest of the method remains the same
     }
     
