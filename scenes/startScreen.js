@@ -51,14 +51,14 @@ export default class StartScreen extends Phaser.Scene {
      });
 
      // Add options button
-     const optionsButton = this.add.image(width * 0.7, height * 0.6, 'options-button')
-         .setInteractive()
-         .setScale(0.4 * scaleFactor);
+    //  const optionsButton = this.add.image(width * 0.7, height * 0.6, 'options-button')
+    //      .setInteractive()
+    //      .setScale(0.4 * scaleFactor);
 
-     optionsButton.on('pointerdown', () => {
-         // Handle options button click
-         console.log('Options button clicked');
-     });
+    //  optionsButton.on('pointerdown', () => {
+    //      // Handle options button click
+    //      console.log('Options button clicked');
+    //  });
         // Add instructions
         const instructionsText = 'Tap and hold to move\nTap to shoot';
         this.add.text(width / 2, height * 0.8, instructionsText, {
