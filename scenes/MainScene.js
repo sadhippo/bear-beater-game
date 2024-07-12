@@ -168,10 +168,7 @@ export class MainScene extends Phaser.Scene {
             frameRate: 4,
             repeat: -1
         });
-        this.mouse = this.add.sprite(400, 300, 'mouse-stand');
-
-        // Play the animation
-        this.mouse.play('mouse-walk');
+        
     }
 
     loadTotalScore() {
