@@ -24,7 +24,7 @@ export default class StartScreen extends Phaser.Scene {
         background.setScale(Math.max(scaleX, scaleY));
 
         // Add game title
-        this.add.text(width / 2, height * 0.2, 'Bear Beater', {
+        this.add.text(width / 2, height * 0.2, 'Cat Blaster', {
             fontSize: `${64 * scaleFactor}px`,
             fill: '#ffffff'
         }).setOrigin(0.5);
