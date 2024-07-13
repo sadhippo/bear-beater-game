@@ -310,7 +310,7 @@ export class MainScene extends Phaser.Scene {
     setupInput() {
         this.input.on('pointerdown', (pointer) => {
             Utils.shootProjectiles(this, this.player, pointer);
-            player.play(catAnimationKey);
+            this.player.play('catShoot');
 
         }, this);
     }
