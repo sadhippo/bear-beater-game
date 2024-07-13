@@ -20,14 +20,39 @@ function toggleFullscreen() {
     }
 }
 
+// Function to initialize Telegram Web App
+function initTelegramWebApp(game) {
+    tg.setBackgroundColor('#FFFFFF');
+    tg.BackButton.show();
+    tg.BackButton.onClick(() => {
+        // Handle back button click, return to StartScreen
+        const currentScene = game.scene.getScenes(true)[0];
+        if (currentScene.scene.key !== 'StartScreen') {
+            game.scene.start('StartScreen');
+        } else {
+            // If already on StartScreen, maybe show a "Are you sure you want to quit?" dialog
+            if (confirm('Are you sure you want to quit the game?')) {
+                tg.close();
+            }
+        }
+    });
+}
+
 // Wait for the DOM to be ready
 document.addEventListener('DOMContentLoaded', () => {
-    // Create the game instance
-    const game = new Phaser.Game({
+    // Adjust config for Telegram Web App
+    const updatedConfig = {
         ...config,
+        width: tg.viewportStableWidth,
+        height: tg.viewportStableHeight,
         scene: [StartScreen, MainScene, ArmouryScene]
-    });
+    };
 
+    // Create the game instance
+    const game = new Phaser.Game(updatedConfig);
+
+    // Initialize Telegram Web App
+    initTelegramWebApp(game);
 
     // Handle visibility change
     document.addEventListener('visibilitychange', () => {

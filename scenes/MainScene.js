@@ -48,6 +48,8 @@ export class MainScene extends Phaser.Scene {
         this.load.image('powerup', 'powerup.png');
         this.load.image('mouse-stand', 'mouse-stand.png');
         this.load.image('mouse-step', 'mouse-walk.png');
+        this.load.image('cat-open', 'cat-open.png');
+        this.load.image('cat-closed', 'cat-closed.png');
 
         // Add loading progress bar
         let progressBar = this.add.graphics();
@@ -90,7 +92,7 @@ export class MainScene extends Phaser.Scene {
         // Create player
         const playerX = this.screenWidth / 2;
         const playerY = this.screenHeight - 100 * this.scaleFactor;
-        this.player = new Player(this, this.screenWidth / 2, this.screenHeight / 2, 'bull');
+        this.player = new Player(this, this.screenWidth / 2, this.screenHeight / 2, 'cat-closed');
 
         //this.player = new Player(this, this.screenWidth / 2, this.screenHeight - 100 * this.scaleFactor / 2, 'bull');
         this.player.setCollideWorldBounds(true);
@@ -138,6 +140,7 @@ export class MainScene extends Phaser.Scene {
         // Set up game-over event
         this.events.on('playerDied', this.gameOver, this);
         this.mouseAnimationWalk();
+        this.catShootAnimation();
 
         // Initialize bear spawning
         Utils.initEnemySpawn(this);
@@ -167,6 +170,20 @@ export class MainScene extends Phaser.Scene {
             ],
             frameRate: 4,
             repeat: -1
+        });
+        
+    }
+
+    catShootAnimation(){
+        this.anims.create({
+            key: 'catShoot',
+            frames: [
+                { key: 'cat-closed' },
+                { key: 'cat-open' },
+                { key: 'cat-closed' }
+            ],
+            frameRate: 4,
+            repeat: 1
         });
         
     }
@@ -293,6 +310,8 @@ export class MainScene extends Phaser.Scene {
     setupInput() {
         this.input.on('pointerdown', (pointer) => {
             Utils.shootProjectiles(this, this.player, pointer);
+            player.play(catAnimationKey);
+
         }, this);
     }
     
