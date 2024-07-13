@@ -182,7 +182,7 @@ export class MainScene extends Phaser.Scene {
                 { key: 'cat-open' },
                 { key: 'cat-closed' }
             ],
-            frameRate: 4,
+            frameRate: 30,
             repeat: 1
         });
         
