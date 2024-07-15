@@ -50,6 +50,11 @@ export default class StartScreen extends Phaser.Scene {
         });
      });
 
+     const storeButton = this.add.image(width * 0.3, height * 0.6, 'Title_Store_Purple')
+        .setInteractive()
+        .setScale(0.4 * scaleFactor);
+    storeButton.on('pointerdown', () => this.scene.start('StoreScene'));
+
      // Add options button
     //  const optionsButton = this.add.image(width * 0.7, height * 0.6, 'options-button')
     //      .setInteractive()
