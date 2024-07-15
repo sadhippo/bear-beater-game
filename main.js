@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ...config,
         width: tg.viewportStableWidth,
         height: tg.viewportStableHeight,
-        scene: [StartScreen, MainScene, ArmouryScene]
+        scene: [StartScreen, MainScene, ArmouryScene, StoreScene]
     };
 
     // Create the game instance
