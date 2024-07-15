@@ -1,4 +1,4 @@
-class StoreScene extends Phaser.Scene {
+export default class StoreScene extends Phaser.Scene {
     constructor() {
         super('StoreScene');
     }
