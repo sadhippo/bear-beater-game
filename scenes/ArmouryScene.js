@@ -68,27 +68,32 @@ export default class ArmouryScene extends Phaser.Scene {
             this.upgradeList = this.add.group();
         
             const upgrades = UpgradeManager.getUpgradesByCategory(this.currentCategory);
+            const itemHeight = this.scale.height * 0.15;
             upgrades.forEach((upgrade, index) => {
-                const y = 100 + index * 80;
+                const y = this.scale.height * 0.2 + index * itemHeight;
                 this.createUpgradeItem(upgrade, y);
             });
         }
     }
 
     createBackground() {
-        this.add.rectangle(0, 0, this.sys.game.config.width, this.sys.game.config.height, 0x000000, 0.8).setOrigin(0);
+        this.add.rectangle(0, 0, this.scale.width, this.scale.height, 0x000000, 0.8).setOrigin(0);
     }
 
     createScoreDisplay() {
-        this.ScoreText = this.add.text(10, 10, `Score: ${this.playerManager.totalScore}`, { fontSize: '24px', fill: '#FFD700' });
+        const fontSize = this.scale.width * 0.04;
+        this.ScoreText = this.add.text(10, 10, `Score: ${this.playerManager.totalScore}`, { fontSize: `${fontSize}px`, fill: '#FFD700' });
     }
 
     createCategoryTabs() {
         const categories = UpgradeManager.getAllCategories();
+        const tabWidth = this.scale.width / categories.length;
         categories.forEach((category, index) => {
-            const x = 100 + index * 200;
-            const y = 50;
-            const tab = this.add.text(x, y, category, { fontSize: '24px', fill: '#ffffff' })
+            const x = tabWidth * (index + 0.5);
+            const y = this.scale.height * 0.1;
+            const fontSize = this.scale.width * 0.03;
+            const tab = this.add.text(x, y, category, { fontSize: `${fontSize}px`, fill: '#ffffff' })
+                .setOrigin(0.5)
                 .setInteractive()
                 .on('pointerdown', () => this.selectCategory(category));
 
@@ -105,25 +110,33 @@ export default class ArmouryScene extends Phaser.Scene {
         }
     }
 
-    createUpgradeList() {
-        if (this.upgradeList) {
-            if (typeof this.upgradeList.clear === 'function') {
-                this.upgradeList.clear(true, true);
-            } else {
-                console.warn('upgradeList.clear is not a function');
-                // Destroy all children manually
-                this.upgradeList.getChildren().forEach(child => child.destroy());
-            }
-        }
-    
-        // Always create a new group
-        this.upgradeList = this.add.group();
-    
-        const upgrades = UpgradeManager.getUpgradesByCategory(this.currentCategory);
-        upgrades.forEach((upgrade, index) => {
-            const y = 100 + index * 80;
-            this.createUpgradeItem(upgrade, y);
-        });
+    createUpgradeItem(upgrade, y) {
+        const level = this.playerManager.getUpgradeLevel(upgrade.id);
+        const cost = UpgradeManager.getUpgradeCost(upgrade.id, level);
+        const effect = this.playerManager.getUpgradeEffect(upgrade.id);
+        
+        const fontSize = this.scale.width * 0.03;
+        const smallFontSize = fontSize * 0.8;
+
+        const baseTextStyle = {
+            fontSize: `${fontSize}px`,
+            fontFamily: 'Arial',
+            align: 'left',
+        };
+
+        const nameText = this.add.text(this.scale.width * 0.05, y, upgrade.name, { ...baseTextStyle, fill: '#ffffff' });
+        const levelText = this.add.text(this.scale.width * 0.35, y, `Lv: ${level}`, { ...baseTextStyle, fill: '#00ff00' });
+        const costText = this.add.text(this.scale.width * 0.55, y, `Cost: ${cost}`, { ...baseTextStyle, fill: '#ffff00' });
+
+        const buyButton = this.add.text(this.scale.width * 0.85, y + this.scale.height * 0.02, 'Buy', { fontSize: `${fontSize * 1.2}px`, fill: '#ffffff', backgroundColor: '#0000ff' })
+            .setOrigin(0.5)
+            .setInteractive()
+            .setPadding(5)
+            .on('pointerdown', () => this.buyUpgrade(upgrade));
+
+        const descriptionText = this.add.text(this.scale.width * 0.05, y + this.scale.height * 0.05, `${upgrade.description} (Effect: ${effect.toFixed(2)})`, { ...baseTextStyle, fontSize: `${smallFontSize}px`, fill: '#aaaaaa' });
+
+        this.upgradeList.addMultiple([nameText, levelText, costText, buyButton, descriptionText]);
     }
 
     createUpgradeItem(upgrade, y) {
@@ -169,18 +182,20 @@ export default class ArmouryScene extends Phaser.Scene {
     }
 
     showInsufficientFundsMessage() {
-        const message = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height / 2, 'Not enough Score!', 
-            { fontSize: '32px', fill: '#ff0000' })
+        const fontSize = this.scale.width * 0.05;
+        const message = this.add.text(this.scale.width / 2, this.scale.height / 2, 'Not enough Score!', 
+            { fontSize: `${fontSize}px`, fill: '#ff0000' })
             .setOrigin(0.5);
 
         this.time.delayedCall(2000, () => message.destroy());
     }
 
     createBackButton() {
-        const backButton = this.add.text(this.sys.game.config.width - 100, this.sys.game.config.height - 200, 'Back', 
-            { fontSize: '60px', fill: '#ffffff', backgroundColor: '#333333' })
+        const fontSize = this.scale.width * 0.06;
+        const backButton = this.add.text(this.scale.width * 0.9, this.scale.height * 0.9, 'Back', 
+            { fontSize: `${fontSize}px`, fill: '#ffffff', backgroundColor: '#333333' })
             .setInteractive()
-            .setPadding(10)
+            .setPadding(5)
             .setOrigin(0.5)
             .on('pointerdown', () => {
                 this.armouryIsActive = false;
