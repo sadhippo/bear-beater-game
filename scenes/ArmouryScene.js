@@ -139,6 +139,28 @@ export default class ArmouryScene extends Phaser.Scene {
         this.upgradeList.addMultiple([nameText, levelText, costText, buyButton, descriptionText]);
     }
 
+    createUpgradeList() {
+        if (this.upgradeList) {
+            if (typeof this.upgradeList.clear === 'function') {
+                this.upgradeList.clear(true, true);
+            } else {
+                console.warn('upgradeList.clear is not a function');
+                // Destroy all children manually
+                this.upgradeList.getChildren().forEach(child => child.destroy());
+            }
+        }
+    
+        // Always create a new group
+        this.upgradeList = this.add.group();
+    
+        const upgrades = UpgradeManager.getUpgradesByCategory(this.currentCategory);
+        const itemHeight = this.scale.height * 0.15;
+        upgrades.forEach((upgrade, index) => {
+            const y = this.scale.height * 0.2 + index * itemHeight;
+            this.createUpgradeItem(upgrade, y);
+        });
+    }
+    
     createUpgradeItem(upgrade, y) {
         const level = this.playerManager.getUpgradeLevel(upgrade.id);
         const cost = UpgradeManager.getUpgradeCost(upgrade.id, level);
