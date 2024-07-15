@@ -2,6 +2,7 @@ import { config } from './config/config.js';
 import { MainScene } from './scenes/MainScene.js';
 import StartScreen from './scenes/startScreen.js';
 import ArmouryScene from './scenes/ArmouryScene.js';
+import StoreScene from './scenes/StoreScene.js';
 
 let tg = window.Telegram.WebApp;
 
