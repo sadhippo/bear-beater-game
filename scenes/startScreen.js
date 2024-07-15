@@ -50,9 +50,9 @@ export default class StartScreen extends Phaser.Scene {
         });
      });
 
-     const storeButton = this.add.image(width * 0.3, height * 0.6, 'Title_Store_Purple')
-        .setInteractive()
-        .setScale(0.4 * scaleFactor);
+     const storeButton = this.add.text(width * 0.3, height * 0.8, 'Title_Store_Purple')
+    .setInteractive()
+    .setScale(0.4 * scaleFactor);
     storeButton.on('pointerdown', () => this.scene.start('StoreScene'));
 
      // Add options button
@@ -66,7 +66,7 @@ export default class StartScreen extends Phaser.Scene {
     //  });
         // Add instructions
         const instructionsText = 'Tap and hold to move\nTap to shoot';
-        this.add.text(width / 2, height * 0.8, instructionsText, {
+        this.add.text(width / 2, height * 0.99, instructionsText, {
             fontSize: `${24 * scaleFactor}px`,
             fill: '#ffffff',
             align: 'center'
